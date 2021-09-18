@@ -303,7 +303,7 @@ async function getUserByUsername(username) {
       SELECT *
       FROM users
       WHERE username=$1;
-      `, [username]);
+    `, [username]);
 
     return user;
   } catch (error) {

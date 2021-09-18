@@ -3,6 +3,8 @@ const { JsonWebTokenError } = require('jsonwebtoken');
 const usersRouter = express.Router();
 
 const { getAllUsers, getUserByUsername } = require('../db');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = process.env;
 
 usersRouter.use((req,res,next) => {
     console.log("A request is being made to /users");
@@ -22,6 +24,14 @@ usersRouter.get('/', async (req,res) => {
 
 usersRouter.post('/login', async (req, res, next) => {
     const { username, password } = req.body;
+    // console.log('>>>username, password', username, password);
+    // const user = await getUserByUsername(username);
+    // const passwordIsMatch = user.password === password;
+    // console.log('>>>>>>passwordIsMatch', passwordIsMatch);
+
+    // if (passwordIsMatch) { const token = jwt.sign(user, JWT_SECRET);
+    // res.send(token);
+  
   
     // request must have both
     if (!username || !password) {
@@ -50,6 +60,7 @@ usersRouter.post('/login', async (req, res, next) => {
   });
 
   
+// }})
 
 module.exports = usersRouter;
 
