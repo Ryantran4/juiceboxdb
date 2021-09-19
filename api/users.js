@@ -46,7 +46,13 @@ usersRouter.post('/login', async (req, res, next) => {
   
       if (user && user.password == password) {
         // create token & return to user
-        res.send({ message: "you're logged in!","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJqb3NodWEiLCJpYXQiOjE2MzE5Mzk4NzF9.illdP43YaGLwjksUpsbNBYd8mg71zRIeYUgM1gTt4Xs"});
+        const token = jwt.sign({
+          id: user.id,
+          user: user.username
+        }, process.env.JWT_SECRET)
+
+        res.send({ message: "you're logged in!",
+        token:token });
       } else {
         next({ 
           name: 'IncorrectCredentialsError', 
@@ -97,3 +103,7 @@ usersRouter.post('/login', async (req, res, next) => {
 
 module.exports = usersRouter;
 
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlciI6ImFsYmVydCIsImlhdCI6MTYzMTk5NDkwN30.mfNZIcCY9Ulrm1uHllNiQFxI1VdDiTZ8J9OiBOObgwA
+
+//curl http://localhost:3000/api/posts -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlciI6ImFsYmVydCIsImlhdCI6MTYzMTk5NDkwN30.mfNZIcCY9Ulrm1uHllNiQFxI1VdDiTZ8J9OiBOObgwA' -H 'Content-Type: application/json' -d '{"title": "test post", "content": "how is this?", "tags": " #once #twice    #happy"}'
